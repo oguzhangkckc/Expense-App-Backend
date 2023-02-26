@@ -10,13 +10,6 @@ const app = express()
 app.use(express.json())
 app.use(inputRouter)
 
-// app.use((req, res, next) => {
-//     req.on("data", (chunk) => {
-//         const data = JSON.parse(chunk)
-//         req.body = data
-//         })
-//         next()
-//     })
 
 
 app.listen(port, () => {
