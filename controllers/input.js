@@ -1,4 +1,5 @@
 const Expense = require("../models/input");
+const mongoose = require("mongoose");
 
 exports.addExpense = async (req, res) => {
   console.log(req.body);
@@ -24,7 +25,6 @@ exports.addExpense = async (req, res) => {
 };
 
 exports.getExpense = async (req, res) => {
-  console.log(req.body);
   try {
     const expenses = await Expense.find().sort({ date: -1 });
     res.status(200).json(expenses);
@@ -37,7 +37,6 @@ exports.getExpense = async (req, res) => {
 };
 
 exports.deleteExpense = async (req, res) => {
-  console.log(req.params.id);
   try {
     const expense = await Expense.findByIdAndDelete(req.params.id);
     if (!expense)
@@ -49,4 +48,19 @@ exports.deleteExpense = async (req, res) => {
     console.log(error);
     res.status(500).json({ success: false, message: "Server error" });
   }
+};
+
+exports.updateExpense = async (req, res) => {
+  const { id } = req.params;
+  console.log(req.body);
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ msg: "Expense id not found!" });
+  }
+
+  const expense = await Expense.findByIdAndUpdate({ _id: id }, { ...req.body });
+
+  if (!expense) {
+    return res.status(404).json({ msg: "Expense not found!" });
+  }
+  res.status(200).json({ msg: "Expense updated successfully!" });
 };
