@@ -1,16 +1,17 @@
 const express = require("express")
 const { addExpense, getExpense, deleteExpense, updateExpense} = require("../controllers/input")
-const { deleteUser, login, register} = require("../controllers/user")
+const { login, register, getProfile, resetPassword} = require("../controllers/user")
 const router = express.Router()
 
 
 router.post("/add-expense", addExpense)
 router.get("/get-expense", getExpense)
-router.delete("/:id", deleteExpense)
-router.put("/:id", updateExpense)
+router.delete("/delete/:id", deleteExpense)
+router.put("/update/:id", updateExpense)
 
 router.post("/register", register)
 router.post("/login", login)
-router.delete("/delete-user/:id", deleteUser)
+router.get("/user/:id", getProfile)
+router.post("/reset-password", resetPassword)
 
 module.exports = router
