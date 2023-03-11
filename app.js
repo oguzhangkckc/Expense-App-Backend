@@ -9,8 +9,8 @@ const port = 3000
 const app = express()
 
 app.use(express.json())
-app.use(inputRouter)
-app.use(userRouter)
+app.use("/user", userRouter)
+app.use("/input", inputRouter)
 
 
 

@@ -1,6 +1,5 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
-const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 
 const createToken = (_id) => {
@@ -71,24 +70,6 @@ exports.register = async (req, res) => {
   });
 
   res.status(201).json(newUser);
-};
-
-exports.getProfile = async (req, res) => {
-  const { id } = req.params;
-  console.log(req.body)
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ msg: "Invalid user id!" });
-  }
-  try {
-    const user = await User.findById(id);
-    if (!user) {
-      return res.status(404).json({ msg: "User not found!" });
-    }
-    res.status(200).json(user);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ msg: "Server error!" });
-  }
 };
 
 exports.resetPassword = async (req, res) => {
