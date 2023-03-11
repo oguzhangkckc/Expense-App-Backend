@@ -74,19 +74,21 @@ exports.register = async (req, res) => {
 };
 
 exports.getProfile = async (req, res) => {
-  
   const { id } = req.params;
-  console.log(req.body);
+  console.log(req.body)
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ msg: "User id not found!" });
+    return res.status(400).json({ msg: "Invalid user id!" });
   }
-
-  const user = await User.findById(id).populate("user",[ "fullname", "email"])
-
-  if(!user) {
-    return res.status(404).json({ msg: "User not found!" });
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ msg: "User not found!" });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Server error!" });
   }
-  res.status(200).json(user);
 };
 
 exports.resetPassword = async (req, res) => {
@@ -101,7 +103,6 @@ exports.resetPassword = async (req, res) => {
         message: "User not found, with the given email!",
       });
     }
-    
     const reset = await User.findOneAndReplace(user.password, password);
     if (!reset) {
       return res.status(400).json({
