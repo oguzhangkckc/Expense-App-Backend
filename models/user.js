@@ -73,4 +73,34 @@ userSchema.statics.login = async function (email, password) {
   return user;
 };
 
+userSchema.statics.resetPassword = async function (email, password) {
+  if (!email || !password) {
+    throw Error("Please fill all the fields!");
+  }
+
+  if (!validator.isEmail(email)) {
+    throw Error("Please enter a valid email address!");
+  }
+  if (password.length < 6) {
+    console.log("password too short");
+    throw Error("The password must be at least 6 characters");
+  }
+
+  const user = await this.findOne({ email });
+
+  if (!user) {
+    throw Error("There is no such email!");
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  const hash = await bcrypt.hash(password, salt);
+
+  const resetPassword = await this.findOneAndUpdate(
+    { email },
+    { password : hash }
+  );
+  console.log("password changed")
+  return resetPassword;
+};
+
 module.exports = mongoose.model("User", userSchema);
