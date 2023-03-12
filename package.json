@@ -7,7 +7,8 @@
     "jwt-decode": "^3.1.2",
     "mongoose": "^6.9.2",
     "npm": "^9.5.0",
-    "react-native-bcrypt": "^2.4.0"
+    "react-native-bcrypt": "^2.4.0",
+    "validator": "^13.9.0"
   },
   "name": "basitbackend",
   "version": "1.0.0",

@@ -1,6 +1,8 @@
 const Expense = require("../models/input");
 const mongoose = require("mongoose");
 
+///////////////////////// ADD EXPENSE ///////////////////////////
+
 exports.addExpense = async (req, res) => {
   console.log(req.body);
   const { name, amount, description } = req.body;
@@ -24,6 +26,8 @@ exports.addExpense = async (req, res) => {
   }
 };
 
+///////////////////////// GET EXPENSE ///////////////////////////
+
 exports.getExpense = async (req, res) => {
   try {
     const expenses = await Expense.find()
@@ -35,6 +39,8 @@ exports.getExpense = async (req, res) => {
       .json({ message: "An error occurred while fetching expenses" });
   }
 };
+
+///////////////////////// DELETE EXPENSE ///////////////////////////
 
 exports.deleteExpense = async (req, res) => {
   try {
@@ -49,6 +55,8 @@ exports.deleteExpense = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
+///////////////////////// UPDATE EXPENSE ///////////////////////////
 
 exports.updateExpense = async (req, res) => {
   const { id } = req.params;
