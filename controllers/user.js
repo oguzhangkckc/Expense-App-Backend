@@ -47,6 +47,7 @@ exports.resetPassword = async (req, res) => {
     const user = await User.resetPassword(email, password);
 
     const token = createToken(user._id);
+
     res.status(201).json({ email, token });
   } catch (error) {
     console.log("error.message :" + error.message);
