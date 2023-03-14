@@ -1,19 +1,18 @@
 const Image = require("../models/image");
-const mongoose = require("mongoose");
 
 ///////////////////////// ADD IMAGE ///////////////////////////
 
 exports.addImage = async (req, res) => {
+  const image = new Image({
+    name: req.body.name,
+    image: req.body.image,
+  });
   try {
-    const { image } = req.body;
-    if (!image) {
-      return res.status(400).json({ message: "Please upload an image" });
-    }
-    const newImage = await Image.addImage(image);
+    const newImage = await image.save();
     res.status(201).json(newImage);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "An error occurred while adding image" });
+    res.status(500).json({ message: "An error occurred while saving image" });
   }
 };
 
@@ -21,28 +20,20 @@ exports.addImage = async (req, res) => {
 
 exports.getImage = async (req, res) => {
   try {
-    const images = await Image.find();
-    res.status(200).json(images);
+    const image = await Image.findById(req.params.id);
+
+    if (!image) {
+      return res.status(404).json({ message: "Image not found" });
+    }
+    res.setHeader("Content-Type", image.image.contentType);
+
+    return res.send(image.image.data);
   } catch (error) {
     console.error(error);
-    res
+    return res
       .status(500)
-      .json({ message: "An error occurred while fetching images" });
+      .json({ message: "An error occurred while retrieving image" });
   }
 };
 
 ///////////////////////// DELETE IMAGE ///////////////////////////
-
-exports.deleteImage = async (req, res) => {
-  try {
-    const image = await Image.findByIdAndDelete(req.params.id);
-    if (!image)
-      return res
-        .status(404)
-        .json({ success: false, message: "Image not found" });
-    res.status(201).json({ success: true, message: "Image deleted" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: "Server error" });
-  }
-};
