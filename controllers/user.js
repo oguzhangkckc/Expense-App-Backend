@@ -54,3 +54,28 @@ exports.resetPassword = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+///////////////////////// ADD IMAGE ////////////////////////////////////
+
+exports.addImage = async (req, res) => {
+  const user = await User.findOne({ email: req.params.email });
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  console.log(user)
+
+  // Assuming that you have a middleware that handles file uploads and
+  // stores the uploaded file in req.file
+  const image = req.file.path;
+  
+  // Associate the image with the user and save it
+  user.image = image;
+  try {
+    const updatedUser = await user.save();
+    res.status(201).json(updatedUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "An error occurred while saving image" });
+  }
+};
+

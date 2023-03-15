@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
 
 const imageSchema = new mongoose.Schema({
-    name: {
+    email: {
         type: String,
-        required: false,
+        required: true,
+        unique: true
     },
     image: {
-        data : Buffer,
+        type : Buffer,
         contentType : String
     }
 },{timestamps: true});
