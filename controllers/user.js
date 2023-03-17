@@ -25,10 +25,10 @@ exports.login = async (req, res) => {
 ///////////////////////// REGISTER /////////////////////////////
 
 exports.register = async (req, res) => {
-  const { fullname, email, password } = req.body;
-  console.log(fullname, email, password);
+  const { fullname, email, password, confirmPassword } = req.body;
+  console.log(fullname, email, password, confirmPassword);
   try {
-    const user = await User.register(fullname, email, password);
+    const user = await User.register(fullname, email, password, confirmPassword);
 
     const token = createToken(user._id);
     res.status(201).json({ email, token });
@@ -41,10 +41,10 @@ exports.register = async (req, res) => {
 ///////////////////////// RESET PASSWORD /////////////////////////////
 
 exports.resetPassword = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, confirmPassword } = req.body;
   console.log(email, password);
   try {
-    const user = await User.resetPassword(email, password);
+    const user = await User.resetPassword(email, password, confirmPassword);
 
     const token = createToken(user._id);
 

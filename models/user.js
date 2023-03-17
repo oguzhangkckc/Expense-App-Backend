@@ -23,15 +23,34 @@ const userSchema = new Schema({
   { timestamps: true }
 );
 
-userSchema.statics.register = async function (fullname, email, password) {
-  if (!fullname || !email || !password) {
-    console.log("empty fullname, email or password");
-    throw Error("Please fill all the fields");
+userSchema.statics.register = async function (fullname, email, password, confirmPassword) {
+
+  if(fullname === "" ){
+    throw Error("Fullname is required!");
   }
 
-  if (password.length < 6) {
-    console.log("password too short");
+  if(email === "" ){
+    throw Error("Email is required!");
+  }
+
+  if(password === "" ){
+    throw Error("Password is required!");
+  }
+
+  if(confirmPassword === "" ){
+    throw Error("Confirm password is required!");
+  }
+
+  if (!validator.isEmail(email)) {
+    throw Error("Please enter a valid email address!");
+  }
+  
+  if(password.length < 6){
     throw Error("The password must be at least 6 characters");
+  }
+
+  if(password !== confirmPassword){
+    throw Error("Passwords do not match!");
   }
 
   const exists = await this.findOne({ email });
@@ -73,9 +92,21 @@ userSchema.statics.login = async function (email, password) {
   return user;
 };
 
-userSchema.statics.resetPassword = async function (email, password) {
-  if (!email || !password) {
-    throw Error("Please fill all the fields!");
+userSchema.statics.resetPassword = async function (email, password, confirmPassword) {
+  if(email === "" ){
+    throw Error("Email is required!");
+  }
+
+  if(password === "" ){
+    throw Error("Password is required!");
+  }
+
+  if(confirmPassword === "" ){
+    throw Error("Confirm password is required!");
+  }
+  
+  if(password !== confirmPassword){
+    throw Error("Passwords do not match!");
   }
 
   if (!validator.isEmail(email)) {

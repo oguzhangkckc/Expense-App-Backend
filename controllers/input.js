@@ -11,8 +11,15 @@ exports.addExpense = async (req, res) => {
       .status(400)
       .json({ success: false, message: "Please fill all fields" });
   }
+  if(amount < 0) {
+    return res 
+      .status(400)
+      .json({ success: false, message: "Please enter a positive amount" })
+  }
+
   try {
     const newExpense = await Expense.create({
+      email: req.params.email,
       name: name,
       amount: amount,
       description: description,
@@ -30,16 +37,17 @@ exports.addExpense = async (req, res) => {
 
 exports.getExpense = async (req, res) => {
   try {
-    const expenses = await Expense.find()
+    const expenses = await Expense.find({ email: req.params.email });
+    if (!expenses || expenses.length === 0) {
+      return res.status(404).json({ message: "Expense not found" });
+    }
+    console.log("expenses: " + expenses)
     res.status(200).json(expenses);
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({ message: "An error occurred while fetching expenses" });
+    res.status(500).json({ message: "An error occurred while fetching expenses", error: error.message });
   }
 };
-
 ///////////////////////// DELETE EXPENSE ///////////////////////////
 
 exports.deleteExpense = async (req, res) => {

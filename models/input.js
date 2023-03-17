@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const expenseSchema = new mongoose.Schema({
+    email: {
+        type: String,
+        required: true,
+        unique: false,
+    },
     name: {
         type: String,
         required: false,
