@@ -28,7 +28,12 @@ exports.register = async (req, res) => {
   const { fullname, email, password, confirmPassword } = req.body;
   console.log(fullname, email, password, confirmPassword);
   try {
-    const user = await User.register(fullname, email, password, confirmPassword);
+    const user = await User.register(
+      fullname,
+      email,
+      password,
+      confirmPassword
+    );
 
     const token = createToken(user._id);
     res.status(201).json({ email, token });
@@ -62,12 +67,12 @@ exports.addImage = async (req, res) => {
   if (!user) {
     return res.status(404).json({ message: "User not found" });
   }
-  console.log(user)
+  console.log(user);
 
   // Assuming that you have a middleware that handles file uploads and
   // stores the uploaded file in req.file
   const image = req.file.path;
-  
+
   // Associate the image with the user and save it
   user.image = image;
   try {
@@ -78,4 +83,3 @@ exports.addImage = async (req, res) => {
     res.status(500).json({ message: "An error occurred while saving image" });
   }
 };
-

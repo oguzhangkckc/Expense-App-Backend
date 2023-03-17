@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 const bcrypt = require("bcrypt");
 const validator = require("validator");
 
-const userSchema = new Schema({
+const userSchema = new Schema(
+  {
     fullname: {
       type: String,
       required: true,
@@ -23,33 +24,37 @@ const userSchema = new Schema({
   { timestamps: true }
 );
 
-userSchema.statics.register = async function (fullname, email, password, confirmPassword) {
-
-  if(fullname === "" ){
+userSchema.statics.register = async function (
+  fullname,
+  email,
+  password,
+  confirmPassword
+) {
+  if (fullname === "") {
     throw Error("Fullname is required!");
   }
 
-  if(email === "" ){
+  if (email === "") {
     throw Error("Email is required!");
   }
 
-  if(password === "" ){
+  if (password === "") {
     throw Error("Password is required!");
   }
 
-  if(confirmPassword === "" ){
+  if (confirmPassword === "") {
     throw Error("Confirm password is required!");
   }
 
   if (!validator.isEmail(email)) {
     throw Error("Please enter a valid email address!");
   }
-  
-  if(password.length < 6){
+
+  if (password.length < 6) {
     throw Error("The password must be at least 6 characters");
   }
 
-  if(password !== confirmPassword){
+  if (password !== confirmPassword) {
     throw Error("Passwords do not match!");
   }
 
@@ -63,7 +68,7 @@ userSchema.statics.register = async function (fullname, email, password, confirm
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(password, salt);
 
-  const user = await this.create({fullname, email, password: hash });
+  const user = await this.create({ fullname, email, password: hash });
 
   return user;
 };
@@ -92,20 +97,24 @@ userSchema.statics.login = async function (email, password) {
   return user;
 };
 
-userSchema.statics.resetPassword = async function (email, password, confirmPassword) {
-  if(email === "" ){
+userSchema.statics.resetPassword = async function (
+  email,
+  password,
+  confirmPassword
+) {
+  if (email === "") {
     throw Error("Email is required!");
   }
 
-  if(password === "" ){
+  if (password === "") {
     throw Error("Password is required!");
   }
 
-  if(confirmPassword === "" ){
+  if (confirmPassword === "") {
     throw Error("Confirm password is required!");
   }
-  
-  if(password !== confirmPassword){
+
+  if (password !== confirmPassword) {
     throw Error("Passwords do not match!");
   }
 
@@ -128,9 +137,9 @@ userSchema.statics.resetPassword = async function (email, password, confirmPassw
 
   const resetPassword = await this.findOneAndUpdate(
     { email },
-    { password : hash }
+    { password: hash }
   );
-  console.log("password changed")
+  console.log("password changed");
   return resetPassword;
 };
 
