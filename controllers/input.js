@@ -41,7 +41,6 @@ exports.getExpense = async (req, res) => {
     if (!expenses || expenses.length === 0) {
       return res.status(404).json({ message: "Expense not found" });
     }
-    console.log("expenses: " + expenses)
     res.status(200).json(expenses);
   } catch (error) {
     console.error(error);

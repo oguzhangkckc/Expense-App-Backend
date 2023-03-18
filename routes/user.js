@@ -1,11 +1,6 @@
 const express = require("express")
 const { login, register, resetPassword, addImage} = require("../controllers/user")
 const userRouter = express.Router()
-const { requireAuth } = require("../middleware/requireAuth");
-
-const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
-
 
 
 userRouter.post("/register", register)
