@@ -50,17 +50,18 @@ exports.getExpense = async (req, res) => {
 ///////////////////////// DELETE EXPENSE ///////////////////////////
 
 exports.deleteExpense = async (req, res) => {
-  try {
-    const expense = await Expense.findByIdAndDelete(req.params.id);
-    if (!expense)
-      return res
-        .status(404)
-        .json({ success: false, message: "Expense not found" });
-    res.status(201).json({ success: true, message: "Expense deleted" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: "Server error" });
+ const { id } = req.params;
+ console.log(req.body);
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ msg: "Expense id not found!" });
   }
+
+  const expense = await Expense.findByIdAndDelete({ _id: id });
+
+  if (!expense) {
+    return res.status(404).json({ msg: "Expense not found!" });
+  }
+  res.status(200).json({ msg: "Expense deleted successfully!" });
 };
 
 ///////////////////////// UPDATE EXPENSE ///////////////////////////

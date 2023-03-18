@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
 imageRouter.use(requireAuth);
 
 imageRouter.post("/add-image/:email", upload.single('image'), addImage);
-imageRouter.get("/get-image/:email", getImage);
+imageRouter.get("/get-image/:email", upload.single('image'), getImage);
 
 
 module.exports = imageRouter;
