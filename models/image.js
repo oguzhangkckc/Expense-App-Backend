@@ -7,9 +7,8 @@ const imageSchema = new mongoose.Schema({
         unique: true
     },
     image: {
-        type : Buffer,
+        type: Buffer,
         contentType : String,
-        required: true
     }
 },{timestamps: true});
 
