@@ -6,10 +6,10 @@ const imageSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    image: {
-        type: Buffer,
-        contentType : String,
-    }
+    imagePath: {
+        type: String,
+        required: false,
+    },
 },{timestamps: true});
 
 
