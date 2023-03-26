@@ -5,6 +5,7 @@ const path = require("path");
 ///////////////////////// ADD IMAGE ///////////////////////////
 
 exports.addImage = async (req, res) => {
+  
   const image = new Image({
     email: req.params.email,
     imagePath: req.file.path,
