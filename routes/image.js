@@ -1,7 +1,6 @@
 const express = require("express");
 const { addImage, getImage } = require("../controllers/image");
 const imageRouter = express.Router();
-const { requireAuth } = require("../middleware/requireAuth");
 const multer = require("multer");
 
 const storage = multer.diskStorage({
@@ -15,10 +14,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-imageRouter.use(requireAuth);
-
 imageRouter.post("/add-image/:email", upload.single('image'), addImage);
-imageRouter.get("/get-image/:email", getImage);
+imageRouter.get("/get-image/:email", upload.single('image'),getImage);
 
 
 module.exports = imageRouter;
