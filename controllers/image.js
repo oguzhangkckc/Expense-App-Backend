@@ -18,7 +18,6 @@ exports.addImage = async (req, res) => {
   }
 };
 
-
 ///////////////////////// GET IMAGE ///////////////////////////
 
 exports.getImage = async (req, res) => {

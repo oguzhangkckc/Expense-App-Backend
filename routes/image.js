@@ -9,7 +9,7 @@ const storage = multer.diskStorage({
         cb(null, 'uploads')
     },
     filename: (req, file, cb) => {
-        cb(null, file.fieldname + Date.now() + ".jpg")
+        cb(null, file.fieldname + '-' + Date.now() + '.jpg')
     }
   });
 
@@ -18,7 +18,7 @@ const upload = multer({ storage: storage });
 imageRouter.use(requireAuth);
 
 imageRouter.post("/add-image/:email", upload.single('image'), addImage);
-imageRouter.get("/get-image/:email", upload.single('image'), getImage);
+imageRouter.get("/get-image/:email", getImage);
 
 
 module.exports = imageRouter;
